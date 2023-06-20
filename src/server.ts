@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import authRoutes from './app/routes/authRoutes';
 import expenseRoutes from './app/routes/expenseRoutes';
+import healthCheck from './app/routes/healthCheck';
 
 dotenv.config();
 
@@ -11,7 +12,7 @@ const app: Application = express();
 app.use(express.json());
 
 // Rotas
-
+app.use(healthCheck)
 app.use('/api', authRoutes);
 app.use('/api', expenseRoutes);
 
