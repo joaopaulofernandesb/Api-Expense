@@ -30,6 +30,42 @@ export const getAllExpensers = async (req: Request, res: Response) => {
   }
 };
 
+
+export const getMonthlyExpenseStatistics = async (req: Request, res: Response) => {
+  const { month, year,userId } = req.params;
+
+  try {
+    // Converter o mês e ano para números
+    const targetMonth = parseInt(month as string, 10);
+    const targetYear = parseInt(year as string, 10);
+    
+
+    // Verificar se os valores são válidos
+    if (isNaN(targetMonth) || isNaN(targetYear) || targetMonth < 1 || targetMonth > 12) {
+      return res.status(400).json({ message: 'Mês ou ano inválidos.' });
+    }
+
+    // Realizar a consulta no banco de dados para obter as despesas do mês
+    const expenses = await Expense.find({
+      userId,
+      month: targetMonth.toString().padStart(2, "0"),
+      year: targetYear.toString()
+    }).exec();
+
+    // Calcular o valor total das despesas
+    let totalExpense = 0;
+    expenses.forEach((expense) => {
+      totalExpense += expense.amount;
+    });
+
+    res.json({ month: targetMonth, year: targetYear, totalExpense });
+  } catch (error) {
+  
+    res.status(500).json({ message: 'Erro ao obter estatísticas de despesas mensais.' });
+  }
+};
+
+
 export const createExpense = async (req: Request, res: Response) => {
   const { title, amount, month, year, installments, userId } = req.body;
 
@@ -85,7 +121,7 @@ export const createExpense = async (req: Request, res: Response) => {
 
     res.status(201).json({ message: "Despesa(s) criada(s) com sucesso." });
   } catch (error) {
-    console.log(error);
+  
     res.status(500).json({ message: "Erro ao criar a(s) despesa(s)." });
   }
 };
@@ -145,7 +181,7 @@ export const deleteExpense = async (req: Request, res: Response) => {
     await Expense.deleteOne({ _id: id }).exec();
     return res.json({ message: "Despesa(s) excluída(s) com sucesso." });
   } catch (error) {
-    console.log(error);
+  
     res.status(500).json({ message: "Erro ao excluir a(s) despesa(s)." });
   }
 };
