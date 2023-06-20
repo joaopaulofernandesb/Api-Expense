@@ -8,7 +8,6 @@ Esta é uma API para gerenciar despesas. Ela permite que você crie, leia, atual
 - Leitura de despesas
 - Atualização de despesas
 - Exclusão de despesas
-- Estatísticas de despesas
 
 ## Tecnologias utilizadas
 
@@ -77,7 +76,6 @@ A API possui as seguintes rotas:
 - `POST /expenses`: Cria uma nova despesa.
 - `PUT /expenses/:id`: Atualiza uma despesa existente com base no ID fornecido.
 - `DELETE /expenses/:id`: Exclui uma despesa existente com base no ID fornecido.
-- `GET /statistics`: Retorna informações estatísticas sobre as despesas registradas.
 
 Consulte a documentação da API para obter mais detalhes sobre os parâmetros e respostas de cada rota.
 
